@@ -4,7 +4,6 @@
 package mtslx
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"sync"
@@ -47,7 +46,8 @@ func RetrieveIPTLS(ip string, port int, flagInterface string, timeout time.Durat
 	defer handle.Close()
 
 	// Set a BPF filter to capture only TLS traffic to the specified IP and port
-	filter := fmt.Sprintf("tcp and dst host %s and dst port %d", ip, port)
+	// filter := fmt.Sprintf("tcp and dst host %s and dst port %d", ip, port)
+	filter := "tcp"
 	if err := handle.SetBPFFilter(filter); err != nil {
 		return Record{}, err
 	}
