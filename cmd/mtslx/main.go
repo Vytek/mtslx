@@ -4,6 +4,7 @@ package main
 
 import (
 	"flag"
+	"log"
 	"time"
 
 	"github.com/Vytek/mtslx"
@@ -23,6 +24,17 @@ func main() {
 	flag.StringVar(&IP, "ip", "", "IP address to capture TLS traffic from")
 	flag.IntVar(&port, "port", 443, "Port to capture TLS traffic from")
 	flag.DurationVar(&timeout, "timeout", 30*time.Second, "Timeout for capturing TLS traffic")
+	flag.Parse()
 
-	mtslx.RetrieveIPTLS(IP, port, iface, timeout)
+	//Should we print the version and exit?
+	if flag.Arg(0) == "version" {
+		log.Printf("mtslx version: %s", version)
+		return
+	}
+
+	record, err := mtslx.RetrieveIPTLS(IP, port, iface, timeout)
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+	}
+	log.Printf("Record: %+v", record)
 }
